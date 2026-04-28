@@ -11,7 +11,7 @@
     table {
       margin: auto;
       border-collapse: collapse;
-      width: 90%;
+      width: 95%;
       background: white;
     }
     th, td {
@@ -27,14 +27,14 @@
 
 <body>
 
-<h2>Google Form Responses</h2>
+<h2>Smart Fan Survey Responses</h2>
 
 <table id="dataTable">
   <tr id="headerRow"></tr>
 </table>
 
 <script>
-const url = "https://opensheet.elk.sh/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/Sheet1";
+const url = "https://opensheet.elk.sh/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/Form%20responses%201";
 
 fetch(url)
   .then(res => res.json())
@@ -42,12 +42,10 @@ fetch(url)
     let table = document.getElementById("dataTable");
     let headerRow = document.getElementById("headerRow");
 
-    // Create headers dynamically
     Object.keys(data[0]).forEach(key => {
       headerRow.innerHTML += `<th>${key}</th>`;
     });
 
-    // Fill rows
     data.forEach(row => {
       let tr = "<tr>";
       Object.values(row).forEach(val => {
@@ -59,7 +57,7 @@ fetch(url)
   })
   .catch(err => {
     console.error(err);
-    document.body.innerHTML += "<p>Error loading data</p>";
+    document.body.innerHTML += "<p style='color:red'>Error loading data</p>";
   });
 </script>
 
