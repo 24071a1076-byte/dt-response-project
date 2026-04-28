@@ -1,13 +1,60 @@
-<script>
-const url = "https://docs.google.com/spreadsheets/d/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/export?format=csv";
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Fan Survey Responses</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #f5f5f5;
+    }
+    h2 {
+      margin-top: 20px;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 95%;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    th {
+      background: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
 
-fetch(url)
+<body>
+
+<h2>Smart Fan Survey Responses</h2>
+
+<table id="dataTable">
+  <thead>
+    <tr id="headerRow"></tr>
+  </thead>
+  <tbody id="bodyData"></tbody>
+</table>
+
+<script>
+const sheetURL = "https://docs.google.com/spreadsheets/d/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/export?format=csv";
+const proxy = "https://api.allorigins.win/raw?url=";
+
+fetch(proxy + sheetURL)
   .then(response => response.text())
   .then(csv => {
-    const rows = csv.split("\n").map(row => row.split(","));
+    const rows = csv.trim().split("\n").map(row => row.split(","));
 
-    let table = document.getElementById("dataTable");
-    let headerRow = document.getElementById("headerRow");
+    const headerRow = document.getElementById("headerRow");
+    const bodyData = document.getElementById("bodyData");
+
+    // Clear before reload (important)
+    headerRow.innerHTML = "";
+    bodyData.innerHTML = "";
 
     // Headers
     rows[0].forEach(cell => {
@@ -21,11 +68,14 @@ fetch(url)
         tr += `<td>${cell}</td>`;
       });
       tr += "</tr>";
-      table.innerHTML += tr;
+      bodyData.innerHTML += tr;
     }
   })
-  .catch(err => {
-    console.error(err);
+  .catch(error => {
+    console.error(error);
     document.body.innerHTML += "<p style='color:red'>Error loading data</p>";
   });
 </script>
+
+</body>
+</html>
