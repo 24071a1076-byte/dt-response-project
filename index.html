@@ -1,34 +1,28 @@
 <script>
-const url = "https://opensheet.elk.sh/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/1";
+const url = "https://docs.google.com/spreadsheets/d/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/export?format=csv";
 
 fetch(url)
-  .then(res => {
-    if (!res.ok) throw new Error("Failed to fetch");
-    return res.json();
-  })
-  .then(data => {
-    if (!data || data.length === 0) {
-      document.body.innerHTML += "<p>No data found</p>";
-      return;
-    }
+  .then(response => response.text())
+  .then(csv => {
+    const rows = csv.split("\n").map(row => row.split(","));
 
     let table = document.getElementById("dataTable");
     let headerRow = document.getElementById("headerRow");
 
-    // headers
-    Object.keys(data[0]).forEach(key => {
-      headerRow.innerHTML += `<th>${key}</th>`;
+    // Headers
+    rows[0].forEach(cell => {
+      headerRow.innerHTML += `<th>${cell}</th>`;
     });
 
-    // rows
-    data.forEach(row => {
+    // Data rows
+    for (let i = 1; i < rows.length; i++) {
       let tr = "<tr>";
-      Object.values(row).forEach(val => {
-        tr += `<td>${val}</td>`;
+      rows[i].forEach(cell => {
+        tr += `<td>${cell}</td>`;
       });
       tr += "</tr>";
       table.innerHTML += tr;
-    });
+    }
   })
   .catch(err => {
     console.error(err);
