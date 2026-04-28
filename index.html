@@ -9,22 +9,12 @@
       background: #f5f5f5;
     }
     h2 {
-      margin-top: 20px;
+      margin: 20px;
     }
-    table {
-      margin: auto;
-      border-collapse: collapse;
+    iframe {
       width: 95%;
-      background: white;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    th {
-      background: #4CAF50;
-      color: white;
+      height: 600px;
+      border: none;
     }
   </style>
 </head>
@@ -33,49 +23,7 @@
 
 <h2>Smart Fan Survey Responses</h2>
 
-<table id="dataTable">
-  <thead>
-    <tr id="headerRow"></tr>
-  </thead>
-  <tbody id="bodyData"></tbody>
-</table>
-
-<script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/export?format=csv";
-const proxy = "https://api.allorigins.win/raw?url=";
-
-fetch(proxy + sheetURL)
-  .then(response => response.text())
-  .then(csv => {
-    const rows = csv.trim().split("\n").map(row => row.split(","));
-
-    const headerRow = document.getElementById("headerRow");
-    const bodyData = document.getElementById("bodyData");
-
-    // Clear before reload (important)
-    headerRow.innerHTML = "";
-    bodyData.innerHTML = "";
-
-    // Headers
-    rows[0].forEach(cell => {
-      headerRow.innerHTML += `<th>${cell}</th>`;
-    });
-
-    // Data rows
-    for (let i = 1; i < rows.length; i++) {
-      let tr = "<tr>";
-      rows[i].forEach(cell => {
-        tr += `<td>${cell}</td>`;
-      });
-      tr += "</tr>";
-      bodyData.innerHTML += tr;
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    document.body.innerHTML += "<p style='color:red'>Error loading data</p>";
-  });
-</script>
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS7c0jN0BWQSrNWNQPUm_Lu3OAaJu4Ns_NAzHIPCHX9wPRP2hmRKkNteub4WN0k-aVN2Pv5Zht-kn0k/pubhtml"></iframe>
 
 </body>
 </html>
