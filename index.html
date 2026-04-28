@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Responses</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #f5f5f5;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 90%;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Google Form Responses</h2>
+
+<table id="dataTable">
+  <tr id="headerRow"></tr>
+</table>
+
+<script>
+const url = "https://opensheet.elk.sh/1wV5C8HiWWwf9pcjM8CqUT-z6U7ug3Opi3z7QDbufoYQ/Sheet1";
+
+fetch(url)
+  .then(res => res.json())
+  .then(data => {
+    let table = document.getElementById("dataTable");
+    let headerRow = document.getElementById("headerRow");
+
+    // Create headers
+    Object.keys(data[0]).forEach(key => {
+      headerRow.innerHTML += `<th>${key}</th>`;
+    });
+
+    // Add rows
+    data.forEach(row => {
+      let tr = "<tr>";
+      Object.values(row).forEach(val => {
+        tr += `<td>${val}</td>`;
+      });
+      tr += "</tr>";
+      table.innerHTML += tr;
+    });
+  })
+  .catch(err => {
+    console.error(err);
+    document.body.innerHTML += "<p>Error loading data</p>";
+  });
+</script>
+
+</body>
+</html>
