@@ -8,10 +8,23 @@
       text-align: center;
       background: #f5f5f5;
     }
-    iframe {
+    h2 {
+      margin: 20px;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
       width: 95%;
-      height: 600px;
-      border: none;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    th {
+      background: #4CAF50;
+      color: white;
     }
   </style>
 </head>
@@ -20,7 +33,45 @@
 
 <h2>Smart Fan Survey Responses</h2>
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS7c0jN0BWQSrNWNQPUm_Lu3OAaJu4Ns_NAzHIPCHX9wPRP2hmRKkNteub4WN0k-aVN2Pv5Zht-kn0k/pubhtml"></iframe>
+<table id="dataTable">
+  <thead>
+    <tr id="headerRow"></tr>
+  </thead>
+  <tbody id="bodyData"></tbody>
+</table>
+
+<script>
+const url = "https://script.google.com/macros/s/AKfycbzvHJvLBjD6UCXJtbkA8Hzu6IQz1TVbP-5kTaNbNLiJyvn03ZPpVsD_Uh6aDpdPnEUUAg/exec";
+
+fetch(url)
+  .then(res => res.json())
+  .then(data => {
+    const headerRow = document.getElementById("headerRow");
+    const bodyData = document.getElementById("bodyData");
+
+    headerRow.innerHTML = "";
+    bodyData.innerHTML = "";
+
+    // headers
+    Object.keys(data[0]).forEach(key => {
+      headerRow.innerHTML += `<th>${key}</th>`;
+    });
+
+    // rows
+    data.forEach(row => {
+      let tr = "<tr>";
+      Object.values(row).forEach(val => {
+        tr += `<td>${val}</td>`;
+      });
+      tr += "</tr>";
+      bodyData.innerHTML += tr;
+    });
+  })
+  .catch(err => {
+    console.error(err);
+    document.body.innerHTML += "<p style='color:red'>Error loading data</p>";
+  });
+</script>
 
 </body>
 </html>
